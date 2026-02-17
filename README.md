@@ -3,17 +3,17 @@
 This guide provides step-by-step instructions to set up a physics simulation environment using MuJoCo and Conda.
 
 ## Tbale of Contents
-1. Prerequisites
+1. [Prerequisites](#1-prerequisites)
 
-2. Install Conda (Miniconda)
+2. [Install Conda (Miniconda)](#2-install-conda-miniconda)
 
-3. Create Virtual Environment
+3. [Create Virtual Environment](#3-create-virtual-environment)
 
-4. Install MuJoCo
+4. [Install MuJoCo](#4-install-mujoco)
 
-5. Verification
+5. [Verification](#5-verification)
 
-6. Troubleshooting
+6. [Troubleshooting](#6-troubleshooting)
 
 ## 1. Prerequisites
 Ensure your system meets the following requirements:
