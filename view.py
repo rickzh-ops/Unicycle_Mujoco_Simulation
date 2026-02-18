@@ -14,7 +14,7 @@ bid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name)
 if bid == -1:
     raise RuntimeError(f"can't find '{body_name}' Body, check XML!")
 
-F = np.array([10, 0, 0.0])      
+F = np.array([10, 0, 0.0])           #give the wheel a push
 r = np.array([0.0, 0.0, 0.25])     
 tau = np.cross(r, F)               
 
