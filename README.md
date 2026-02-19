@@ -1,6 +1,6 @@
-# MuJoCo Environment Setup Guide
+# I. MuJoCo Environment Setup Guide
 
-This guide provides step-by-step instructions to set up a physics simulation environment using MuJoCo and Conda.
+This section provides step-by-step instructions to set up a physics simulation environment using MuJoCo and Conda.
 
 ## Tbale of Contents
 1. [Prerequisites](#1-prerequisites)
@@ -97,3 +97,24 @@ sudo apt update
 sudo apt install libgl1-mesa-dev libglew-dev
 ```
 - Environment Not Found: Ensure you have activated the environment using ``conda activate .venv`` before running your scripts.
+
+# II. Simulation Code
+
+This section introduces the files used for simulation in this repository.
+
+## 1. The Model
+The key simulation model is defined in ``Model\out.xml`` .
+
+To inspect the model and its physical properties, execute the following command:
+```Bash
+mjpython view.py
+```
+Once the MuJoCo viewer initializes, the simulation will run as follows:
+
+- Initial State: The model remains static for the first 2 seconds.
+
+- External Force: After this 2-second delay, a force is automatically applied to the model.
+
+- Movement: This force initiates the rotation, and the wheel will begin rolling.
+
+## 2. Simulation Code
