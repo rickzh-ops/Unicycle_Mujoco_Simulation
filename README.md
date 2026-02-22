@@ -107,6 +107,9 @@ sudo apt install libgl1-mesa-dev libglew-dev
 ```
 - Environment Not Found: Ensure you have activated the environment using ``conda activate .venv`` before running your scripts.
 
+<br>
+<br>
+
 # II. Simulation Code
 
 This section introduces the files used for simulation in this repository.
