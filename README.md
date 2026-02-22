@@ -1,3 +1,12 @@
+# Unicycle Mujoco  Simulation
+
+## 📑 Table of Contents
+1. [Environment Setup](#i-mujoco-environment-setup-guide)
+2. [Simulation Documentation](#ii-simulation-code)
+<br>
+<br>
+
+
 # I. MuJoCo Environment Setup Guide
 
 This section provides step-by-step instructions to set up a physics simulation environment using MuJoCo and Conda.
@@ -118,3 +127,41 @@ Once the MuJoCo viewer initializes, the simulation will run as follows:
 - Movement: This force initiates the rotation, and the wheel will begin rolling.
 
 ## 2. Simulation Code
+### 2.1 Configuration
+You can modify the following parameters in the "Config" section of ``simu.py``:
+
+- ``RUN_MODE``:
+
+  - ``'VIEWER'``: Launches the interactive MuJoCo passive viewer for real-time 3D observation.
+
+  - ``'PLOT'``: Runs the simulation in the background and generates a ``plot_result.png`` file for data analysis.
+
+- ``CTRL_MODE``:
+
+  - ``'POSITION'``: The vehicle moves toward and stays at TARGET_POS.
+
+  - ``'VELOCITY'``: The vehicle maintains a constant speed defined by TARGET_VEL.
+
+  - ``'BALANCE'``: The vehicle maintains its current position and suppresses any velocity drift.
+
+### 2.2 Controller Architecture
+
+The system utilizes a dual-loop control strategy:
+1. **Outer Loop (Kinematics)**: Processes position or velocity errors to calculate a "Target Tilt Angle" ($target\_gamma$). This angle is clipped by ``max_tilt`` to prevent the inner loop from reaching an unrecoverable state.
+2. **Inner Loop (Dynamics)**: High-frequency feedback loop that tracks the $target\_gamma$ by calculating the motor torque ($\tau$) based on the current absolute angle and angular velocity.
+
+### 2.3 Running the Simulation
+Ensure your virtual environment is activated:
+```Bash
+conda activate .venv
+```
+
+Execute the simulation using ``mjpython`` to ensure proper 3D rendering and library support:
+```Bash
+mjpython simu.py
+```
+
+### 2.4 Data Visualization
+When ``RUN_MODE`` is set to ``'PLOT'``, the script outputs two synchronized graphs:
+- **Upper Plot**: Tracks the convergence of $x_c$ (Position) or $v_c$ (Velocity) against the red dashed target line.
+- **Lower Plot**: Displays the absolute tilt angle in degrees to monitor the "lean" of the unicycle during acceleration and braking.
