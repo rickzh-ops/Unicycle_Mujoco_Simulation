@@ -12,7 +12,7 @@ import subprocess
 # 'VIEWER' - Mujoco UI
 # 'PLOT'   - Generate plot 
 RUN_MODE = 'PLOT'       # 'PLOT', 'VIEWER'
-CTRL_MODE = 'VELOCITY'  # 'POSITION', 'BALANCE', 'VELOCITY'
+CTRL_MODE = 'BALANCE'  # 'POSITION', 'BALANCE', 'VELOCITY'
 SIM_DURATION = 30.0     
 TARGET_POS = 2.0        
 TARGET_VEL = 1.0        
@@ -74,7 +74,7 @@ class SegwayController:
             target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
 
         else: # BALANCE
-            target_gamma = Params.K_velocity * (0 - x_dot)
+            target_gamma = 0   #Params.K_velocity * (0 - x_dot)
             target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
 
         gamma_err = gamma - target_gamma
