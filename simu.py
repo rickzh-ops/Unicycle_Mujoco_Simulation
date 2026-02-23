@@ -12,9 +12,9 @@ import subprocess
 # 'VIEWER' - Mujoco UI
 # 'PLOT'   - Generate plot 
 RUN_MODE = 'PLOT'       # 'PLOT', 'VIEWER'
-CTRL_MODE = 'BALANCE'  # 'POSITION', 'BALANCE', 'VELOCITY'
-SIM_DURATION = 30.0     
-TARGET_POS = 2.0        
+CTRL_MODE =  'VELOCITY'  # 'POSITION', 'BALANCE', 'VELOCITY'
+SIM_DURATION = 50.0     
+TARGET_POS = 4.0        
 TARGET_VEL = 1.0        
 
 # ==========================================
@@ -22,11 +22,11 @@ TARGET_VEL = 1.0
 # ==========================================
 class Params:
 
-    K_gamma = 20.0      
-    K_dgamma = 2.0       
+    K_gamma = 3.0      
+    K_dgamma = 0.8      
 
-    K_position = 0.5   
-    K_velocity = 2    
+    K_position = 2   
+    K_velocity = 4    
     
     max_tilt = (80/180)*np.pi
 
@@ -65,22 +65,22 @@ class SegwayController:
 
         if CTRL_MODE == 'POSITION':
             pos_err = TARGET_POS - x
-            target_gamma = Params.K_position * pos_err + Params.K_velocity * (0 - x_dot)
-            target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
+            target_gamma =Params.K_gamma*(0-gamma) + Params.K_dgamma*(0-gamma_dot) + Params.K_position * pos_err + Params.K_velocity * (0 - x_dot)
+            #target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
 
         elif CTRL_MODE == 'VELOCITY':
             vel_err = TARGET_VEL - x_dot
-            target_gamma = Params.K_velocity * vel_err
-            target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
+            target_gamma = Params.K_velocity * vel_err  + Params.K_gamma*(0-gamma) + Params.K_dgamma*(0-gamma_dot) 
+            #target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
 
         else: # BALANCE
             target_gamma = 0   #Params.K_velocity * (0 - x_dot)
-            target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
+            #target_gamma = np.clip(target_gamma, -Params.max_tilt, Params.max_tilt)
 
         gamma_err = gamma - target_gamma
         tau = Params.K_gamma * gamma_err + Params.K_dgamma * gamma_dot
 
-        return tau
+        return -target_gamma
 
 
 # ==========================================
@@ -105,7 +105,7 @@ def main():
                 step_start = time.time()
                 
                 state = get_abs_state(data)
-                if abs(state[2]) > np.pi/2: 
+                if abs(state[2]) > 10000000:#np.pi: 
                     print(f"The System fails at {data.time:.2f}s")
                     break 
 
@@ -127,7 +127,7 @@ def main():
         print(f"Simulating for {CTRL_MODE} ...")
         while data.time < SIM_DURATION:
             state = get_abs_state(data)
-            if abs(state[2]) > np.pi/2: break 
+            if abs(state[2]) > 100000: break #np.pi: break 
             
             torque = controller.compute(state, data.time)
             data.actuator('main_motor').ctrl[0] = np.clip(torque, -150, 150)
