@@ -1,3 +1,5 @@
 .DS_Store
+.ipynb_checkpoints/
 trash/
 plot_result.png
+MUJOCO_LOG.TXT
