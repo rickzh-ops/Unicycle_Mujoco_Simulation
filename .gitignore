@@ -3,3 +3,4 @@
 trash/
 plot_result.png
 MUJOCO_LOG.TXT
+csv/mydata/*

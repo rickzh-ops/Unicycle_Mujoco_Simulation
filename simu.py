@@ -4,18 +4,30 @@ import numpy as np
 import time
 import os
 import subprocess
+from enum import Enum
 
 # ==========================================
 # 1. Config
 # ==========================================
 # Operation mode: 
+
+class RunMode(str, Enum):
+    V = 'VIEWER'
+    P = 'PLOT'
+    
+class ControlMode(str, Enum):
+    P = 'POSITION'  
+    V = 'VELOCITY'
+    B = 'BALANCE'
+
 # 'VIEWER' - Mujoco UI
 # 'PLOT'   - Generate plot 
-RUN_MODE = 'PLOT'       # 'PLOT', 'VIEWER'
-CTRL_MODE =  'POSITION'  # 'POSITION', 'BALANCE', 'VELOCITY'
+RUN_MODE = RunMode.P      # 'PLOT', 'VIEWER'
+CTRL_MODE =  ControlMode.P  # 'POSITION', 'BALANCE', 'VELOCITY'
 SIM_DURATION = 30.0     
-TARGET_POS = 4.0        
-TARGET_VEL = 1.0        
+TARGET_POS = 1.0        
+TARGET_VEL = 0.5
+GenerateCsv = True        
 
 # ==========================================
 # 2. Parameters
@@ -155,6 +167,27 @@ def main():
             history['gamma'].append(state[2])
 
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+        if GenerateCsv:
+            save_dir = os.path.join('csv', 'mydata')
+        
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+                print(f"Created directory: {save_dir}")
+            
+            file_name = f"{CTRL_MODE.value.lower()}.csv" 
+            csv_output_path = os.path.join(save_dir, file_name)
+
+            save_df = pd.DataFrame({
+            'time': history['t'],
+            'theta': 0,
+            'gamma': history['gamma'],
+            'x_c': history['x'],
+            'x_c_dot': history['x_dot']
+            })
+            save_df.to_csv(csv_output_path, index=False)
+            print(f">>> Data successfully saved to: {csv_output_path}")
+
         
         if CTRL_MODE == 'VELOCITY':
             ax1.plot(history['t'], history['x_dot'], label='Actual $v_c$', color='orange')
