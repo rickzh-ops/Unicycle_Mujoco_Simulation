@@ -6,7 +6,7 @@
 
   <default>
     <geom condim="4"
-          friction="0.6 0.05 0.05"
+          friction="1 0.01 0.006"
           solref="0.001 1"
           solimp="0.95 0.95 0.001"/>
   </default>
@@ -31,25 +31,27 @@
     <light pos="-2 1 2" dir="1 -0.5 -1" diffuse="0.4 0.4 0.4"/>
     <camera name="cam_main" pos="2.0 -2.5 1.5" xyaxes="0.78 0.62 0  -0.25 0.31 0.92"/>
 
-    <geom name="floor" type="plane" size="1000 200 0.1" material="matplane"/>
+    <geom name="floor" type="plane" size="1000 200 0.1" material="matplane"
+          condim="6" friction="1 0.01 0.006"/>
+
 
     <body name="wheel" pos="0 0 0.25">
       <freejoint name="root"/>
       <!-- <joint name="root_x" type="slide" axis="1 0 0"/> <joint name="root_z" type="slide" axis="0 0 1"/> <joint name="root_y" type="hinge" axis="0 1 0"/> -->
-      <!-- <inertial pos = "0 0 0" mass="1.5" diaginertia = "1e-6 1e-6 1e-6"/>       -->
+      <inertial pos = "0 0 0" mass="3.06" diaginertia = " 0.04325388727 0.1045709321 0.07"/>
 
       <geom name="visual" type="mesh" mesh="wheel_mesh" material="matwheel"
             pos="-0.25 -0.035 -0.25" mass="0"
             contype="0" conaffinity="0"/>
 
-      <geom name="collision" type="ellipsoid" size="0.25 0.0125 0.25"
-            pos="0 0 0" mass="1.5" euler="0 0 0" 
-            rgba="0 0 0.8 0" 
-            contype="1" conaffinity="1"/>
+      <geom name="collision" type="cylinder" size="0.25 0.0125"
+            pos="0 0 0" mass="0" euler="90 0 0" 
+            condim="6" friction="1 0.01 0.006"
+            rgba="1 0 0 1" contype="1" conaffinity="1"/>
 
-      <!-- <geom name="disk_left" type="cylinder" size="0.21 0.015" 
+      <geom name="disk_left" type="cylinder" size="0.21 0.015" 
         pos="0 -0.0175 0" mass="0" euler="90 0 0" 
-        rgba="0 0 0.8 0" contype="1" conaffinity="1"/> -->
+        rgba="0 0 0.8 0" contype="1" conaffinity="1"/>
 
       <body name="y_slider" pos="0 0 0">
         <joint name="slider_joint" type="slide" axis="0 1 0"
@@ -63,12 +65,12 @@
         <joint name="box_hinge" type="hinge" axis="0 1 0" damping="0.306"/>
         <!-- <inertial pos = "0 0 0" mass="1.5" diaginertia = "1e-6 1e-6 1e-6"/> -->
         
-        <!-- <geom name="disk_right" type="cylinder" size="0.165 0.015" 
+        <geom name="disk_right" type="cylinder" size="0.165 0.015" 
         pos="0 0.0175 0" mass="0" euler="90 0 0" material="glass_material"
-        contype="1" conaffinity="1"/> -->
+        contype="1" conaffinity="1"/>
 
-        <geom name="block_geom" type="box" size="0.075 0.04 0.03" 
-        pos="0 0 0.1" mass="1" euler="0 0 0" rgba="0 0 0.8 1" 
+        <geom name="block_geom" type="box" size="0.1363 0.0443 0.0684" 
+        pos="0 0 0.115" mass="0.7" euler="0 0 0" rgba="0 0 0.8 1" 
         contype="2" conaffinity="2"/>
       </body>
       
