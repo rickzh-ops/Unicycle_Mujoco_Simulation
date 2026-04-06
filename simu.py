@@ -24,7 +24,7 @@ class ControlMode(str, Enum):
 # 'PLOT'   - Generate plot 
 RUN_MODE = RunMode.P      # 'PLOT', 'VIEWER'
 CTRL_MODE =  ControlMode.P  # 'POSITION', 'BALANCE', 'VELOCITY'
-SIM_DURATION = 30.0     
+SIM_DURATION = 10.0     
 TARGET_POS = 1.0        
 TARGET_VEL = 0.5
 GenerateCsv = True        
@@ -43,7 +43,7 @@ class Params:
     # K_position = 2   
     # K_velocity = 4 
     K_position = 2  
-    K_velocity = 4 
+    K_velocity = 3.3 
     K_i = 0 #30000
        
     
