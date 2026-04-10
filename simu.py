@@ -22,7 +22,7 @@ class ControlMode(str, Enum):
 
 # 'VIEWER' - Mujoco UI
 # 'PLOT'   - Generate plot 
-RUN_MODE = RunMode.V      # 'PLOT', 'VIEWER'
+RUN_MODE = RunMode.P      # 'PLOT', 'VIEWER'
 CTRL_MODE =  ControlMode.V  # 'POSITION', 'BALANCE', 'VELOCITY'
 SIM_DURATION = 30.0     
 TARGET_POS = 0.0        
